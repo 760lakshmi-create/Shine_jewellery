@@ -18,8 +18,11 @@ function normalizeOrigin(value) {
 }
 
 const frontendOrigins = new Set(
-  (process.env.FRONTEND_URL || '')
-    .split(',')
+  [
+    // Production storefront domain; FRONTEND_URL can add staging/preview domains.
+    'https://shine-jewellery-beta.vercel.app',
+    ...(process.env.FRONTEND_URL || '').split(','),
+  ]
     .map(normalizeOrigin)
     .filter(Boolean),
 );
