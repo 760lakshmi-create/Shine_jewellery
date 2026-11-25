@@ -14,9 +14,11 @@ Open the URL shown in the terminal (default: http://localhost:5173).
 
 ## Production frontend and API
 
-Set `VITE_API_BASE_URL` in the frontend hosting provider to the backend API base URL, including `/api` (for example, `https://shine-jewellery.onrender.com/api`).
-Set `FRONTEND_URL` in the backend hosting provider to the deployed frontend origin (for example, `https://shine-jewellery-beta.vercel.app`, without a trailing slash). Multiple allowed origins can be comma-separated.
-Redeploy both services after changing their environment variables. Local `.env` values are not automatically applied to hosted services.
+In Vercel, set `VITE_API_BASE_URL` to the Render API base URL including `/api`, for example `https://shine-jewellery.onrender.com/api`. Vite embeds `VITE_*` values at build time, so set it for the Vercel Production environment (and Preview if needed) and redeploy after changes. Confirm the deployed bundle uses the Render hostname, not the Vercel site's `/api` path.
+
+In Render, set `FRONTEND_URL` to the exact Vercel origin, for example `https://shine-jewellery-beta.vercel.app`, with no path or trailing slash. Add additional origins as a comma-separated list if Vercel preview deployments need access. Redeploy the Render service after changing this value. CORS allows the configured origins and localhost development origins; it does not allow every `vercel.app` site.
+
+To verify, open `https://<render-service>.onrender.com/api/health` and confirm it returns JSON. In the browser Network panel, check that requests target `https://<render-service>.onrender.com/api/...`, and that an `OPTIONS` preflight response includes `Access-Control-Allow-Origin` matching the Vercel origin, plus the requested method and headers. A CORS error with no matching allow-origin header usually means `FRONTEND_URL` is missing, misspelled, or not redeployed. Local `.env` values are not automatically applied to hosted services.
 
 ## Build for production
 ```bash

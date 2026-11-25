@@ -9,22 +9,33 @@ const port = Number(process.env.API_PORT) || 5000;
 // Support both names used by common MongoDB hosting guides and older local setups.
 const mongoUri = process.env.MONGODB_URI || process.env.DATABASE_URL;
 const hasRazorpayKeys = Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
+function normalizeOrigin(value) {
+  try {
+    return new URL(value.trim()).origin;
+  } catch {
+    return null;
+  }
+}
+
 const frontendOrigins = new Set(
   (process.env.FRONTEND_URL || '')
     .split(',')
-    .map((origin) => origin.trim())
+    .map(normalizeOrigin)
     .filter(Boolean),
 );
 
 app.use((request, response, next) => {
-  const origin = request.headers.origin;
-  const isLocalFrontend = origin && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-  if (origin && (isLocalFrontend || frontendOrigins.has(origin))) {
-    response.setHeader('Access-Control-Allow-Origin', origin);
-    response.setHeader('Vary', 'Origin');
+  const origin = request.get('Origin');
+  const normalizedOrigin = origin ? normalizeOrigin(origin) : null;
+  const isLocalFrontend = normalizedOrigin && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(normalizedOrigin);
+
+  response.vary('Origin');
+  if (normalizedOrigin && (isLocalFrontend || frontendOrigins.has(normalizedOrigin))) {
+    response.setHeader('Access-Control-Allow-Origin', normalizedOrigin);
   }
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key, Authorization');
   response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  response.setHeader('Access-Control-Max-Age', '86400');
   if (request.method === 'OPTIONS') {
     return response.sendStatus(204);
   }
