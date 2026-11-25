@@ -6,9 +6,9 @@ import { useWishlist } from '@/context/WishlistContext';
 import { ArrowLeft, Check, Shield, Truck, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { API_BASE_URL as API } from '@/lib/api';
 
 type StorefrontProduct = { id: string; name: string; price: number; image: string; category: string; description: string; details?: string[]; largeImage?: string };
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export default function ProductDetail() {
   const [, params] = useRoute('/product/:id');

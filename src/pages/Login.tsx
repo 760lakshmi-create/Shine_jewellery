@@ -2,8 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL as API } from '@/lib/api';
 
 export default function Login() {
   const [, setLocation] = useLocation();

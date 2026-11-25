@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Check, RefreshCw, Search, Truck, Wallet } from 'lucide-react';
+import { API_BASE_URL as API } from '@/lib/api';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 type DeliveryBoy = {
   _id: string; name: string; email: string; phone?: string; active: boolean; available: boolean;
   operationalStatus?: string; address?: { line1?:string;city?:string;postalCode?:string };

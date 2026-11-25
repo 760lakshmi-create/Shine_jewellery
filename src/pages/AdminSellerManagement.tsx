@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, BadgeCheck, RefreshCw, Search, Store } from 'lucide-react';
+import { API_BASE_URL as API } from '@/lib/api';
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 type SellerRow = {
   _id: string; name: string; email: string; phone?: string; storeName?: string; operationalStatus: string;
   businessDetails?: { legalName?: string; gstin?: string; verificationStatus?: string };

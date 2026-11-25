@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, Package, RefreshCw } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL as API } from '@/lib/api';
 type HistoryOrder = {
   id: string;
   total: number;

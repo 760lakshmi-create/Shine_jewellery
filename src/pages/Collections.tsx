@@ -4,9 +4,9 @@ import { Link } from 'wouter';
 import { Heart } from 'lucide-react';
 import { useWishlist } from '@/context/WishlistContext';
 import { cn } from '@/lib/utils';
+import { API_BASE_URL as API } from '@/lib/api';
 
 type StorefrontProduct = { id: string; name: string; category: string; price: number; image: string; largeImage?: string; description: string; details: string[] };
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 
 export default function Collections() {
   const [filter, setFilter] = useState<string>('all');

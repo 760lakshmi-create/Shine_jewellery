@@ -5,8 +5,8 @@ import type { LucideIcon } from 'lucide-react';
 import AdminDeliveryManagement from '@/pages/AdminDeliveryManagement';
 import AdminSellerManagement from '@/pages/AdminSellerManagement';
 import AdminOrderControl from '@/pages/AdminOrderControl';
+import { API_BASE_URL as API } from '@/lib/api';
 
-const API = 'http://localhost:5001/api';
 type Product = { _id: string; name: string; category: string; price: number; stock: number; image?: string; largeImage?: string };
 type Collection = { _id: string; name: string; description: string; productCount: number };
 type Order = { id: string; customerName: string; email: string; total: number; status: string; items: number };

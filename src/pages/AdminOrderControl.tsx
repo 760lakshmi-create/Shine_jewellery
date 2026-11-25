@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ClipboardList, CreditCard, RefreshCw, RotateCcw } from 'lucide-react';
+import { API_BASE_URL as API } from '@/lib/api';
 
-const API = 'http://localhost:5001/api';
 type Log = { provider: string; orderReference?: string; paymentReference?: string; amount: number; status: string; createdAt: string };
 type Dispute = { type: string; reason: string; status: string; actor: string; createdAt: string };
 type ControlOrder = { id: string; customerName: string; email: string; total: number; status: string; paymentStatus: string; refundRequestedAt?: string; paymentLogs: Log[]; trackingStatus: string; trackingEvents: { status: string; note: string; occurredAt: string }[]; cancelReason?: string; returnStatus: string; returnReason?: string; disputeHistory: Dispute[] };

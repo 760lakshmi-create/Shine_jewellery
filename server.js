@@ -8,12 +8,19 @@ const app = express();
 const port = Number(process.env.API_PORT) || 5000;
 const mongoUri = process.env.DATABASE_URL;
 const hasRazorpayKeys = Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
+const frontendOrigins = new Set(
+  (process.env.FRONTEND_URL || '')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean),
+);
 
 app.use((request, response, next) => {
   const origin = request.headers.origin;
   const isLocalFrontend = origin && /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin);
-  if (isLocalFrontend) {
+  if (origin && (isLocalFrontend || frontendOrigins.has(origin))) {
     response.setHeader('Access-Control-Allow-Origin', origin);
+    response.setHeader('Vary', 'Origin');
   }
   response.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key, Authorization');
   response.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');

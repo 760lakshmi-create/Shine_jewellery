@@ -4,8 +4,7 @@ import { formatPrice } from '@/data/products';
 import { Link, useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, ChevronRight } from 'lucide-react';
-
-const API = import.meta.env.VITE_API_URL || '/api';
+import { API_BASE_URL as API } from '@/lib/api';
 
 async function readApiResponse(response: Response) {
   const text = await response.text();

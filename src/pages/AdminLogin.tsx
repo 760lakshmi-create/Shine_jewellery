@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { ArrowRight, LockKeyhole } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { API_BASE_URL as API } from '@/lib/api';
 
 export default function AdminLogin() {
   const [, setLocation] = useLocation();
@@ -15,7 +16,7 @@ export default function AdminLogin() {
     setIsSubmitting(true);
     setMessage('');
     try {
-      const response = await fetch('http://localhost:5001/api/admin/login', {
+      const response = await fetch(`${API}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

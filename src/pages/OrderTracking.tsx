@@ -1,8 +1,7 @@
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useRoute } from 'wouter';
 import { Check, Clock3, PackageCheck, RotateCcw, ShieldCheck, Truck } from 'lucide-react';
-
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+import { API_BASE_URL as API } from '@/lib/api';
 type TrackingEvent = { status: string; note: string; occurredAt: string };
 type TrackedOrder = {
   id: string;

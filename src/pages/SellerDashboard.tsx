@@ -1,12 +1,12 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Bell, Box, Check, ChevronRight, CircleDollarSign, Headphones, LayoutDashboard, LogOut, Package, Plus, Search, Settings, ShoppingBag, Truck, Users, X } from 'lucide-react';
+import { API_BASE_URL as API } from '@/lib/api';
 
 type Product = { id: string; name: string; category: string; price: number; stock: number; image?: string; largeImage?: string };
 type Order = { id: string; customer: string; items: string; total: number; status: 'New' | 'Processing' | 'Completed' | 'Rejected' | 'Cancelled'; delivery?: 'Requested' | 'Accepted' | 'Pickup confirmed'; trackingStatus?: string; returnStatus?: string; returnReason?: string; returnPickupDate?: string; cancelReason?: string; date: string };
 type SellerProfile = { name: string; email: string; phone?: string; storeName?: string };
 const cash = (n: number) => `₹${n.toLocaleString('en-IN')}`;
 const read = <T,>(key: string, fallback: T): T => { try { return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback; } catch { return fallback; } };
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
 async function sellerApi<T>(path: string, method = 'GET', body?: unknown): Promise<T> {
   const response = await fetch(`${API}${path}`, { method, headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('shine_seller_token') ? { Authorization: `Bearer ${localStorage.getItem('shine_seller_token')}` } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
   const text = await response.text();

@@ -1,8 +1,8 @@
 import { FormEvent, ReactNode, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'wouter';
 import { Check, Clock3, LogOut, MapPin, PackageCheck, RefreshCw, Truck, Wallet, X } from 'lucide-react';
+import { API_BASE_URL as API } from '@/lib/api';
 
-const API = 'http://localhost:5001/api';
 type Assignment = {
   _id: string;
   decision: 'offered' | 'accepted' | 'rejected';
