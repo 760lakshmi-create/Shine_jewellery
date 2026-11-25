@@ -1344,3 +1344,21 @@ app.post('/api/admin/login', (request, response) => {
   }
 });
 
+app.use('/api', (request, response) => {
+  response.status(404).json({ ok: false, message: `API endpoint ${request.method} ${request.path} not found.` });
+});
+
+app.use('/api', (error, _request, response, next) => {
+  if (response.headersSent) return next(error);
+
+  const status = Number.isInteger(error.status) && error.status >= 400 && error.status < 500
+    ? error.status
+    : 500;
+  if (status === 500) console.error('API request failed:', error);
+
+  return response.status(status).json({
+    ok: false,
+    message: status === 500 ? 'Internal server error.' : error.message,
+  });
+});
+
