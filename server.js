@@ -6,7 +6,8 @@ import crypto from 'node:crypto';
 
 const app = express();
 const port = Number(process.env.API_PORT) || 5000;
-const mongoUri = process.env.DATABASE_URL;
+// Support both names used by common MongoDB hosting guides and older local setups.
+const mongoUri = process.env.MONGODB_URI || process.env.DATABASE_URL;
 const hasRazorpayKeys = Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
 const frontendOrigins = new Set(
   (process.env.FRONTEND_URL || '')
@@ -368,9 +369,10 @@ app.get('/', (_request, response) => {
 });
 
 app.get('/api/health', (_request, response) => {
-  response.json({
-    ok: true,
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+  const connected = mongoose.connection.readyState === 1;
+  response.status(connected ? 200 : 503).json({
+    ok: connected,
+    database: connected ? 'connected' : 'disconnected',
   });
 });
 
@@ -551,15 +553,19 @@ app.patch('/api/seller/orders/:id/return', requireSeller, async (request, respon
 
 async function startServer() {
   if (!mongoUri) {
-    throw new Error('DATABASE_URL is missing. Add it to your .env file.');
+    throw new Error('MongoDB connection string is missing. Set MONGODB_URI (or DATABASE_URL) in your .env file.');
   }
-
-  await mongoose.connect(mongoUri);
-  console.log('MongoDB connected');
 
   app.listen(port, () => {
     console.log(`API server running at http://localhost:${port}`);
   });
+
+  try {
+    await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 10000 });
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.error('MongoDB connection failed. Check MONGODB_URI and your database network access:', error.message);
+  }
 }
 
 startServer().catch((error) => {

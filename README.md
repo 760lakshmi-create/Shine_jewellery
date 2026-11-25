@@ -12,6 +12,12 @@ npm run dev
 ```
 Open the URL shown in the terminal (default: http://localhost:5173).
 
+## Production frontend and API
+
+Set `VITE_API_BASE_URL` in the frontend hosting provider to the backend API base URL, including `/api` (for example, `https://shine-jewellery.onrender.com/api`).
+Set `FRONTEND_URL` in the backend hosting provider to the deployed frontend origin (for example, `https://shine-jewellery-beta.vercel.app`, without a trailing slash). Multiple allowed origins can be comma-separated.
+Redeploy both services after changing their environment variables. Local `.env` values are not automatically applied to hosted services.
+
 ## Build for production
 ```bash
 npm run build
